@@ -6,8 +6,9 @@ const config = require('../config/config');
 const validateToken = expressToken.use((req, res, next) => {
     var errors;
     const params = JSON.parse(JSON.stringify(req.body));
-    if(params.hasOwnProperty('mail') && params.hasOwnProperty('password')){
-        next();    
+    if(params.hasOwnProperty('mail') && params.hasOwnProperty('password') ||
+        params.hasOwnProperty('name') && params.hasOwnProperty('mail') && params.hasOwnProperty('password')){
+        next();
     } else {
         const token = req.headers['access-token'];
         if (token) {

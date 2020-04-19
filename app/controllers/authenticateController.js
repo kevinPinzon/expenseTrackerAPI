@@ -8,7 +8,12 @@ function login(req, res){
     const { mail, password } = req.body;
     
     if (mail == null || password == null){
-        console.log('Faltan parametros');
+        const err = 'error missing required parameters'
+        console.log(err);
+        return res.status(400).send({
+            status: "Error",
+            description: err
+        });
     }
 
     User.findOne({
@@ -16,14 +21,14 @@ function login(req, res){
             mail: mail,
             password: password
         },
-        attributes: ['name']
+        attributes: ['name','id']
     }).then(result => {
         if (result == null){
-            errors = 'User not found!';
+            errors = 'User not found';
             return res.status(400).send({
                 status: "Error",
                 description: errors
-            }); 
+            });
         }
         var data = result.toJSON();
         const playload = { user: data.name, pass: password};
